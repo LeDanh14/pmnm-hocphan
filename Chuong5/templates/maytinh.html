@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm border-primary">
+    <div class="card-header bg-primary text-white"><h5 class="mb-0">Máy tính cơ bản</h5></div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="d-flex gap-2 align-items-center mb-3">
+                <input type="text" name="a" value="{{ a if a is not none else '' }}" class="form-control" placeholder="Số a">
+                <select name="op" class="form-select" style="width: auto;">
+                    <option value="+" {% if op == '+' %}selected{% endif %}>+</option>
+                    <option value="-" {% if op == '-' %}selected{% endif %}>-</option>
+                    <option value="*" {% if op == '*' %}selected{% endif %}>*</option>
+                    <option value="/" {% if op == '/' %}selected{% endif %}>/</option>
+                </select>
+                <input type="text" name="b" value="{{ b if b is not none else '' }}" class="form-control" placeholder="Số b">
+                <button type="submit" class="btn btn-primary">=</button>
+            </div>
+            <div><input type="text" value="{{ calc_result if calc_result is not none else '' }}" class="form-control" placeholder="Kết quả" readonly></div>
+        </form>
+    </div>
+</div>
+{% endblock %}

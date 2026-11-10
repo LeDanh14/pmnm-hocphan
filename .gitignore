@@ -1,0 +1,9 @@
+# Bỏ qua môi trường ảo
+.venv/
+
+# Bỏ qua file rác biên dịch của Python
+__pycache__/
+*.pyc
+
+# Bỏ qua thư mục tạm của Vercel (nếu có sinh ra)
+.vercel/

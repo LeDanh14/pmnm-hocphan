@@ -1,0 +1,28 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4 shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="/">Web</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item"><a class="nav-link" href="/">Trang Chủ</a></li>
+                <li class="nav-item"><a class="nav-link" href="/calc">Máy tính cơ bản</a></li>
+                <li class="nav-item"><a class="nav-link" href="/score">Tính điểm học phần</a></li>
+                <li class="nav-item"><a class="nav-link" href="/bmi">Tính chỉ số BMI</a></li>
+                <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+            </ul>
+            <div class="d-flex align-items-center">
+                {% if 'user' in session %}
+                    <span class="text-white me-3">Xin chào <strong>{{ session['user'] }}</strong></span>
+                    <form action="/logout" method="POST" class="m-0">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Đăng xuất</button>
+                    </form>
+                {% else %}
+                    <a href="/login" class="btn btn-primary btn-sm me-2">Đăng nhập</a>
+                    <a href="/register" class="btn btn-outline-light btn-sm">Đăng ký</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

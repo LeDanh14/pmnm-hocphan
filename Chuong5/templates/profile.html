@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card shadow-sm border-0 rounded-3">
+            <div class="card-header bg-success text-white text-center py-3">
+                <h4 class="mb-0">Hồ Sơ Cá Nhân</h4>
+            </div>
+            <div class="card-body p-4">
+                <div class="text-center mb-4">
+                    <img src="https://ui-avatars.com/api/?name={{ session['user'] }}&background=198754&color=fff&size=120" alt="Avatar" class="rounded-circle shadow mb-3 border border-3 border-success">
+                    <h3 class="fw-bold">{{ session['user'] }}</h3>
+                    {% if session['user'] == 'admin' %}
+                        <span class="badge bg-danger">Quản trị viên</span>
+                    {% else %}
+                        <span class="badge bg-success">Thành viên chính thức</span>
+                    {% endif %}
+                </div>
+                
+                <hr class="text-muted">
+                
+                <div class="row text-center mt-4">
+                    <div class="col-sm-4 mb-3">
+                        <h6 class="text-muted mb-1">Tên đăng nhập</h6>
+                        <p class="fw-bold mb-0">@{{ session['user'] }}</p>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <h6 class="text-muted mb-1">Trạng thái</h6>
+                        <p class="fw-bold text-success mb-0">Đang trực tuyến</p>
+                    </div>
+                    <div class="col-sm-4 mb-3">
+                        <h6 class="text-muted mb-1">Bảo mật</h6>
+                        <p class="fw-bold text-primary mb-0">Đã xác thực</p>
+                    </div>
+                </div>
+                
+                <div class="mt-4 pt-2">
+                    <form action="/logout" method="POST">
+                        <button type="submit" class="btn btn-outline-danger w-100 fw-bold">Đăng xuất khỏi thiết bị này</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <title>Hệ thống Quản lý Sinh viên</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 70%; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .filter-bar { margin-bottom: 15px; }
+        .filter-bar a { margin-right: 10px; text-decoration: none; color: blue; }
+        .filter-bar a.active { font-weight: bold; text-decoration: underline; color: red; }
+        .meta-info { margin: 15px 0; }
+        .nav-bar { margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #ddd; }
+        .nav-bar a { margin-right: 15px; text-decoration: none; color: #333; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <!-- Menu điều hướng chung -->
+    <div class="nav-bar">
+        <a href="{{ url_for('home') }}">Trang chủ</a>
+        <a href="{{ url_for('student_list') }}">Danh sách SV</a>
+        <a href="{{ url_for('search_students') }}">Tìm kiếm</a>
+    </div>
+
+    <!-- 1. GIAO DIỆN TRANG CHỦ -->
+    {% if page == 'home' %}
+        <h2>TRANG CHỦ</h2>
+        <p>Số sinh viên: {{ so_sv }}</p>
+        <p>Số lớp: {{ so_lop }}</p>
+        <p>Liên kết nhanh:</p>
+        <ul>
+            <li><a href="{{ link_students }}">{{ link_students }}</a></li>
+            <li><a href="{{ link_api }}">{{ link_api }}</a></li>
+        </ul>
+
+    <!-- 2. GIAO DIỆN DANH SÁCH SINH VIÊN -->
+    {% elif page == 'list' %}
+        <h2>DANH SÁCH SINH VIÊN</h2>
+        <div class="filter-bar">
+            Lọc theo lớp: 
+            <a href="{{ url_for('student_list') }}" class="{{ 'active' if not current_filter else '' }}">Tất cả</a>
+            {% for c in all_classes %}
+                | <a href="{{ url_for('student_list', lop=c) }}" class="{{ 'active' if current_filter == c.upper() else '' }}">{{ c }}</a>
+            {% endfor %}
+        </div>
+
+        {% if filtered_students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>MSSV</th>
+                    <th>Họ tên</th>
+                    <th>Lớp</th>
+                    <th>Điểm TB</th>
+                    <th>Xếp loại</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for mssv, info in filtered_students.items() %}
+                {% set dtb, xeploai = get_grade(info.scores) %}
+                <tr>
+                    <td><a href="{{ url_for('student_detail', mssv=mssv) }}">{{ mssv }}</a></td>
+                    <td>{{ info.name }}</td>
+                    <td>{{ info.Lop }}</td>
+                    <td>{{ dtb }}</td>
+                    <td>{{ xeploai }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p style="color: red; font-style: italic;">Không có sinh viên phù hợp.</p>
+        {% endif %}
+
+    <!-- 3. GIAO DIỆN CHI TIẾT SINH VIÊN -->
+    {% elif page == 'detail' %}
+        <h2>THÔNG TIN SINH VIÊN</h2>
+        <p><strong>Họ tên:</strong> {{ student.name }}</p>
+        <p><strong>MSSV:</strong> {{ mssv }}</p>
+        <p><strong>Lớp:</strong> <a href="{{ url_for('student_list', lop=student.Lop) }}">{{ student.Lop }}</a></p>
+        <p><strong>Điểm TB:</strong> {{ dtb }}</p>
+        <p><strong>Xếp loại:</strong> {{ xeploai }}</p>
+        
+        <div class="meta-info">
+            <p><strong>Link rút gọn:</strong> <a href="{{ short_link }}">{{ short_link }}</a></p>
+            <p><a href="{{ export_link }}" style="font-weight: bold; color: green;">📥 Tải bảng điểm (CSV)</a></p>
+        </div>
+
+        <h3>Bảng điểm từng học phần:</h3>
+        {% if student.scores %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Môn học</th>
+                    <th>Điểm</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subject, score in student.scores.items() %}
+                <tr>
+                    <td>{{ subject }}</td>
+                    <td>{{ score }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p><em>Chưa có điểm học phần nào.</em></p>
+        {% endif %}
+
+    <!-- 4. GIAO DIỆN TÌM KIẾM -->
+    {% elif page == 'search' %}
+        <h2>TÌM KIẾM SINH VIÊN</h2>
+        <form action="{{ url_for('search_students') }}" method="GET">
+            <input type="text" name="q" value="{{ q }}" placeholder="Nhập tên hoặc MSSV...">
+            <button type="submit">Tìm kiếm</button>
+        </form>
+        <br>
+        {% if q %}
+            <p>Tìm thấy {{ results|length }} kết quả cho "{{ q }}"</p>
+            <ul>
+            {% for mssv, info in results.items() %}
+                <li>
+                    <a href="{{ url_for('student_detail', mssv=mssv) }}">{{ info.name }} ({{ mssv }})</a> - Lớp: {{ info.Lop }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>

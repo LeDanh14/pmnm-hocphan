@@ -1,0 +1,5 @@
+/* Màu đỏ cho các tiêu đề hoặc nội dung cần làm nổi bật */
+.text-custom-red {
+    color: #dc3545; /* Mã màu đỏ chuẩn */
+    font-weight: bold;
+}

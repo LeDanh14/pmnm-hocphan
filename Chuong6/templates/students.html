@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách sinh viên</title>
+    <style>
+        body { font-family: sans-serif; margin: 30px; }
+        table { border-collapse: collapse; width: 100%; max-width: 700px; margin-top: 15px; }
+        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+    <h2>Danh sách sinh viên</h2>
+
+    {% if students %}
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>MSSV</th>
+                    <th>Họ và tên</th>
+                    <th>Điểm GPA</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sv in students %}
+                <tr>
+                    <td>{{ sv.id }}</td>
+                    <td>{{ sv.mssv }}</td>
+                    <td>{{ sv.name }}</td>
+                    <td>{{ "%.2f"|format(sv.gpa) }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p><strong>Tổng số sinh viên:</strong> {{ students|length }}</p>
+    {% else %}
+        <p>Chưa có dữ liệu sinh viên. Hãy vào <a href="/them-mau">/them-mau</a> để tạo dữ liệu.</p>
+    {% endif %}
+</body>
+</html>

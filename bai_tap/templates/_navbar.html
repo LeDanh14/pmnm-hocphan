@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+  <div class="container">
+    <!-- Nhúng Logo SVG tại đây -->
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
+      <img src="{{ url_for('static', filename='img/logo.svg') }}" 
+           alt="Logo" 
+           width="30" 
+           height="30" 
+           class="d-inline-block align-text-top me-2">
+      MiniBlog
+    </a>
+
+    <!-- Nút toggle cho di động -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Menu điều hướng -->
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link {{ 'text-danger fw-bold' if request.endpoint == 'home' else '' }}" href="/">Trang chủ</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ 'text-custom-red' if request.endpoint == 'contact' else '' }}" href="{{ url_for('contact') }}">Liên hệ</a>
+        </li>
+        <li class="nav-item">
+          <!-- Khi ở trang contact, class text-danger fw-bold sẽ được kích hoạt để đổi thành chữ đỏ -->
+          <a class="nav-link {{ 'text-danger fw-bold' if request.endpoint == 'contact' else '' }}" href="{{ url_for('contact') }}">Liên hệ</a>
+        </li>
+      </ul>
+
+      <form class="d-flex" role="search" action="/search" method="GET">
+        <input class="form-control form-control-sm me-2" type="search" name="q" placeholder="Tìm kiếm..." aria-label="Search">
+        <button class="btn btn-sm btn-outline-light" type="submit">Tìm</button>
+      </form>
+    </div>
+  </div>
+</nav>

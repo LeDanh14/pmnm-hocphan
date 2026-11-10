@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card shadow-sm border-success">
+    <div class="card-header bg-success text-white"><h5 class="mb-0">Tính điểm học phần</h5></div>
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3"><label class="form-label fw-bold">Điểm CC (10%):</label><input type="text" name="cc" value="{{ cc if cc is not none else '' }}" class="form-control" placeholder="VD: 8,5"></div>
+            <div class="mb-3"><label class="form-label fw-bold">Điểm GK (30%):</label><input type="text" name="gk" value="{{ gk if gk is not none else '' }}" class="form-control" placeholder="VD: 7,0"></div>
+            <div class="mb-3"><label class="form-label fw-bold">Điểm CK (60%):</label><input type="text" name="ck" value="{{ ck if ck is not none else '' }}" class="form-control" placeholder="VD: 6,5"></div>
+            <button type="submit" class="btn btn-success w-100 mb-3">Tính điểm</button>
+            <div><label class="form-label fw-bold">Kết quả:</label><input type="text" value="{{ score_result if score_result is not none else '' }}" class="form-control text-danger fw-bold" placeholder="Điểm tổng kết & Hệ chữ" readonly></div>
+        </form>
+    </div>
+</div>
+{% endblock %}
